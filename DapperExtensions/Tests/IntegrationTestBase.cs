@@ -1,8 +1,8 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
+using Infrastructure.Infrastructure;
 using NUnit.Framework;
 
-namespace Tests.Infrastructure;
+namespace Tests;
 
 [SetUpFixture]
 public abstract class IntegrationTestBase

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using DbUp;
 
-namespace Tests.Infrastructure;
+namespace Infrastructure.Infrastructure;
 
 public class DbMigrationLite
 {

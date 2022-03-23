@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
+        <PackageVersion>1.0.2</PackageVersion>
+        <Title>Async Dapper Extensions</Title>
+        <Authors>Damir Bolic</Authors>
+        <Description>Async Dapper Extensions which allow passing CancellationToken into Dapper </Description>
+        <Copyright>Damir Bolic</Copyright>
+        <PackageProjectUrl>https://github.com/bolicd/dapper-extensions</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/bolicd/dapper-extensions</RepositoryUrl>
+        <RepositoryType>public</RepositoryType>
+        <PackageTags>dapper;async</PackageTags>
+        <PackageReleaseNotes>Initial deploy</PackageReleaseNotes>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.123" />
+    </ItemGroup>
+
+</Project>

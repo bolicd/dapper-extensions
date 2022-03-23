@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncDapperExtensions", "AsyncDapperExtensions\AsyncDapperExtensions.csproj", "{07A46A9D-720A-41C0-9E53-55D941D75C73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{72929F00-76F7-4B54-B14A-D0A8250CD4E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{35B5D06A-FC23-486D-A8B6-F7C8C972310A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07A46A9D-720A-41C0-9E53-55D941D75C73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07A46A9D-720A-41C0-9E53-55D941D75C73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07A46A9D-720A-41C0-9E53-55D941D75C73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07A46A9D-720A-41C0-9E53-55D941D75C73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72929F00-76F7-4B54-B14A-D0A8250CD4E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72929F00-76F7-4B54-B14A-D0A8250CD4E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72929F00-76F7-4B54-B14A-D0A8250CD4E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72929F00-76F7-4B54-B14A-D0A8250CD4E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B5D06A-FC23-486D-A8B6-F7C8C972310A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B5D06A-FC23-486D-A8B6-F7C8C972310A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B5D06A-FC23-486D-A8B6-F7C8C972310A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B5D06A-FC23-486D-A8B6-F7C8C972310A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

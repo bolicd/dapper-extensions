@@ -7,7 +7,7 @@ namespace Tests;
 [SetUpFixture]
 public abstract class IntegrationTestBase
 {
-    private string ConnectionString { get; set; } = string.Empty;
+    public string ConnectionString { get; set; } = string.Empty;
     private string DatabaseName { get; set; } = string.Empty;
 
     [OneTimeSetUp]

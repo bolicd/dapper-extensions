@@ -10,4 +10,18 @@
       <PackageReference Include="dbup" Version="4.5.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\DapperGenericRepository\DapperGenericRepository.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Scripts\002_PopulateTestTable.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <None Remove="Scripts\001_CreateTestTable.sql" />
+      <EmbeddedResource Include="Scripts\001_CreateTestTable.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>

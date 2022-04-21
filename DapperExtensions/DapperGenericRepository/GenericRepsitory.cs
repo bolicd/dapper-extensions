@@ -27,21 +27,35 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
 
     public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await LoadSelectFields(async () =>
+        return await LoadFields(async () =>
         {
             using var connection = CreateConnection();
-            return await connection.QueryAsyncWithToken<T>($"SELECT {_selectFields} FROM {_tableName}", cancellationToken: cancellationToken);
-        });
+            return await connection.QueryAsyncWithToken<T>($"SELECT {_selectFields} FROM {_tableName}",
+                cancellationToken: cancellationToken);
+        }, true);
     }
 
-    public Task<T> GetAsync(object id, CancellationToken cancellationToken = default)
+    public async Task<T> GetAsync(object id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await LoadFields(async () =>
+        {
+            using var connection = CreateConnection();
+            var result =
+                await connection.QuerySingleOrDefaultWithToken<T>($"SELECT * FROM {_tableName} WHERE Id=@Id",
+                    new { Id = id }, cancellationToken: cancellationToken);
+            if (result == null) throw new KeyNotFoundException($"{_tableName} with id [{id}] could not be found.");
+
+            return result;
+        }, true);
     }
 
-    public Task InsertAsync(T t, CancellationToken cancellationToken = default)
+    public async Task InsertAsync(T t, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var insertQuery = GenerateInsertQuery();
+
+        using var connection = CreateConnection(); 
+        var result = await connection.ExecuteAsyncWithToken(insertQuery, t,cancellationToken: cancellationToken).ConfigureAwait(false);
+        Console.Write(result);
     }
 
     #region PrivateHelperMethods
@@ -61,12 +75,13 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
         conn.Open();
         return conn;
     }
-    
-    private TU LoadSelectFields<TU>(Func<TU> method)
+
+    private TU LoadFields<TU>(Func<TU> method, bool includeId = false)
     {
-        if (string.IsNullOrEmpty(_selectFields)) _selectFields = GenerateSelectFields(_listOfProperties);
+        if (string.IsNullOrEmpty(_selectFields)) _selectFields = GenerateSelectFields(_listOfProperties, includeId);
         return method.Invoke();
     }
+
     private static IEnumerable<string> GenerateListOfProperties(IEnumerable<PropertyInfo> listOfProperties)
     {
         return (from prop in listOfProperties
@@ -74,18 +89,53 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
             where attributes.Length <= 0 || (attributes[0] as DescriptionAttribute)?.Description != "ignore"
             select prop.Name).ToList();
     }
-    
-    private static string GenerateSelectFields(IEnumerable<string> properties)
+
+    private void IgnoreId(string property, Action action)
+    {
+        if (!property.Equals("Id")) action.Invoke();
+    }
+
+    private string GenerateSelectFields(IEnumerable<string> properties, bool includeId)
     {
         var fields = new StringBuilder();
         foreach (var property in properties)
         {
-            fields.Append($"{property},");
+            if (includeId == false)
+            {
+                IgnoreId(property, () => { fields.Append($"{property},"); });
+            }
+            else
+            {
+                fields.Append($"{property},");
+            }
         }
 
         fields.Remove(fields.Length - 1, 1);
         return fields.ToString();
     }
 
+    private string GenerateInsertQuery()
+    {
+        var insertQuery = new StringBuilder($"INSERT INTO {_tableName} ");
+
+        insertQuery.Append("(");
+        foreach (var listOfProperty in _listOfProperties)
+        {
+            //TODO: extract this check
+            IgnoreId(listOfProperty, () => { insertQuery.Append($"[{listOfProperty}],"); });
+        }
+
+        insertQuery.Remove(insertQuery.Length - 1, 1).Append(") VALUES (");
+
+        foreach (var listOfProperty in _listOfProperties)
+        {
+            IgnoreId(listOfProperty, () => { insertQuery.Append($"@{listOfProperty},"); });
+        }
+
+        insertQuery.Remove(insertQuery.Length - 1, 1).Append(")");
+
+        return insertQuery.ToString();
+    }
+
     #endregion
-}    
+}

@@ -3,6 +3,7 @@ using System.Data;
 using System.Reflection;
 using System.Text;
 using AsyncDapperExtensions;
+using DapperGenericRepository.Helpers;
 using Microsoft.Data.SqlClient;
 
 namespace DapperGenericRepository;
@@ -56,6 +57,14 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
         using var connection = CreateConnection(); 
         var result = await connection.ExecuteAsyncWithToken(insertQuery, t,cancellationToken: cancellationToken).ConfigureAwait(false);
         Console.Write(result);
+    }
+
+    public void InsertBulk(IEnumerable<T> items)
+    {
+        var dataTable = BulkInsertHelpers.CreateDataTable(items);
+        using var bulkInsert = new SqlBulkCopy(_connectionString);
+        bulkInsert.DestinationTableName = _tableName;
+        bulkInsert.WriteToServer(dataTable);
     }
 
     #region PrivateHelperMethods

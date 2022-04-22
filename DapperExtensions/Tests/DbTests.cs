@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DapperGenericRepository;
 using FluentAssertions;
@@ -56,5 +57,36 @@ public class DbTests : IntegrationTestBase
         item.Year.Should().Be(2022);
         item.FirstName.Should().Be("TestName1");
         item.LastName.Should().Be("LastTestName1");
+    }
+
+    [Test]
+    public async Task BulkInsert_Test()
+    {
+        //GIVEN
+        var listOfModels = new List<TestTableDao>()
+        {
+            new()
+            {
+                Id = 1,
+                Year = 2022,
+                FirstName = "d",
+                LastName = "b"
+            },
+            new()
+            {
+                Id = 2,
+                Year = 2022,
+                FirstName = "d",
+                LastName = "b"
+            }
+        };
+        
+        //WHEN
+        _genericRepository.InsertBulk(listOfModels);
+        
+        //THEN
+        var results = await _genericRepository.GetAllAsync();
+        var resultsList = results.ToList();
+        resultsList.Count.Should().Be(3);
     }
 }

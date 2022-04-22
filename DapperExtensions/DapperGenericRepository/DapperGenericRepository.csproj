@@ -7,12 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="AsyncDapperExtensions" Version="1.0.2" />
       <PackageReference Include="FluentAssertions" Version="6.6.0" />
       <PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\AsyncDapperExtensions\AsyncDapperExtensions.csproj" />
     </ItemGroup>
 
 </Project>

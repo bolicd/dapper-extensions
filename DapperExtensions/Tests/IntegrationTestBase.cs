@@ -1,5 +1,6 @@
 ﻿using System;
 using Infrastructure.Infrastructure;
+using Microsoft.Data.SqlClient;
 using NUnit.Framework;
 
 namespace Tests;
@@ -10,7 +11,7 @@ public abstract class IntegrationTestBase
     public string ConnectionString { get; set; } = string.Empty;
     private string DatabaseName { get; set; } = string.Empty;
 
-    [OneTimeSetUp]
+    [SetUp]
     public void StartDatabase()
     {
         DatabaseName = Guid.NewGuid().ToString();
@@ -19,7 +20,7 @@ public abstract class IntegrationTestBase
     }
 
     //TODO: Why is teardown not working
-    // [OneTimeTearDown]
+    // [TearDown]
     // public void Teardown()
     // {
     //     
@@ -33,7 +34,7 @@ public abstract class IntegrationTestBase
     //         command.CommandText = "USE master";
     //         command.ExecuteNonQuery();
     //
-    //         command.CommandText = $"DROP DATABASE \"{_databaseName}\"";
+    //         command.CommandText = $"DROP DATABASE \"{DatabaseName}\"";
     //         command.ExecuteNonQuery();
     //     }
     //

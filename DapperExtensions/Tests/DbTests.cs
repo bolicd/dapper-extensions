@@ -35,6 +35,27 @@ public class DbTests : IntegrationTestBase
         resultsList.Count(x => x.FirstName == "test" && x.LastName == "test").Should().Be(1);
         resultsList.Count.Should().Be(2);
     }
+    
+    [Test]
+    public async Task TestItUpdatesDb()
+    {
+        //GIVEN
+        var testRow = new TestTableDao() { Year = 2020, FirstName = "test", LastName = "test" };
+        await _genericRepository.InsertAsync(testRow);
+        var results = await _genericRepository.GetAllAsync();
+        var resultsList = results.ToList();
+        var id = resultsList.Single(x => x.FirstName == "test" && x.LastName == "test").Id;
+        
+        //WHEN
+        var updateRow = new TestTableDao { Id = id, Year = 2021, FirstName = "test2", LastName = "test2" };
+        await _genericRepository.UpdateAsync(updateRow);
+        
+
+        //THEN
+        var r = await _genericRepository.GetAllAsync();
+        var resultUpdate = r.Single(x => x.Id == id);
+        resultUpdate.FirstName.Should().Be("test2");
+    }
 
     [Test]
     public async Task TestSelect()

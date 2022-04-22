@@ -55,7 +55,7 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
         var insertQuery = GenerateInsertQuery();
 
         using var connection = CreateConnection(); 
-        var result = await connection.ExecuteAsyncWithToken(insertQuery, t,cancellationToken: cancellationToken).ConfigureAwait(false);
+        var result = await connection.ExecuteAsyncWithToken(insertQuery, t, cancellationToken: cancellationToken).ConfigureAwait(false);
         Console.Write(result);
     }
 
@@ -65,6 +65,14 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
         using var bulkInsert = new SqlBulkCopy(_connectionString);
         bulkInsert.DestinationTableName = _tableName;
         bulkInsert.WriteToServer(dataTable);
+    }
+
+    public async Task UpdateAsync(T t, CancellationToken cancellationToken = default)
+    {
+        var updateQuery = GenerateUpdateQuery();
+
+        using var connection = CreateConnection();
+        await connection.ExecuteAsyncWithToken(updateQuery, t, cancellationToken: cancellationToken);
     }
 
     #region PrivateHelperMethods
@@ -144,6 +152,21 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
         insertQuery.Remove(insertQuery.Length - 1, 1).Append(")");
 
         return insertQuery.ToString();
+    }
+    
+    private string GenerateUpdateQuery()
+    {
+        var updateQuery = new StringBuilder($"UPDATE {_tableName} SET ");
+
+        foreach (var listOfProperty in _listOfProperties)
+        {
+            IgnoreId(listOfProperty, () => { updateQuery.Append($"{listOfProperty}=@{listOfProperty},"); });
+        }
+
+        updateQuery.Remove(updateQuery.Length - 1, 1); //remove last comma
+        updateQuery.Append(" WHERE Id=@Id");
+
+        return updateQuery.ToString();
     }
 
     #endregion

@@ -110,4 +110,56 @@ public class DbTests : IntegrationTestBase
         var resultsList = results.ToList();
         resultsList.Count.Should().Be(3);
     }
+    
+    [Test]
+    public async Task InsertRange_Test()
+    {
+        //GIVEN
+        var listOfModels = new List<TestTableDao>()
+        {
+            new()
+            {
+                Id = 1,
+                Year = 2022,
+                FirstName = "d",
+                LastName = "b"
+            },
+            new()
+            {
+                Id = 2,
+                Year = 2022,
+                FirstName = "d",
+                LastName = "b"
+            }
+        };
+        
+        //WHEN
+        await _genericRepository.InsertRangeAsync(listOfModels);
+        
+        //THEN
+        var results = await _genericRepository.GetAllAsync();
+        var resultsList = results.ToList();
+        resultsList.Count.Should().Be(3);
+    }
+    
+    [Test]
+    public async Task TestDelete()
+    {
+        //GIVEN
+        var testRow = new TestTableDao() { Year = 2020, FirstName = "test", LastName = "test" };
+        await _genericRepository.InsertAsync(testRow);
+        var results = await _genericRepository.GetAllAsync();
+        var resultsList = results.ToList();
+        var id = resultsList.Single(x => x.FirstName == "test" && x.LastName == "test").Id;
+        
+        //WHEN
+
+        await _genericRepository.DeleteAsync(id);
+        
+
+        //THEN
+        var r = await _genericRepository.GetAllAsync();
+        var resultUpdate = r.SingleOrDefault(x => x.Id == id);
+        resultUpdate.Should().BeNull();
+    }
 }

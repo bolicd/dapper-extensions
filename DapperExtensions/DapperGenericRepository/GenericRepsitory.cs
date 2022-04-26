@@ -59,6 +59,7 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
         Console.Write(result);
     }
 
+    //The bulk copy operation occurs in a non-transacted way, with no opportunity for rolling it back.
     public void InsertBulk(IEnumerable<T> items)
     {
         var dataTable = BulkInsertHelpers.CreateDataTable(items);
@@ -73,6 +74,32 @@ public abstract class GenericRepository<T> : IGenericRepository<T> where T : cla
 
         using var connection = CreateConnection();
         await connection.ExecuteAsyncWithToken(updateQuery, t, cancellationToken: cancellationToken);
+    }
+
+    public async Task DeleteAsync(object id, CancellationToken cancellationToken = default)
+    {
+        using var connection = CreateConnection();
+        await connection.ExecuteAsyncWithToken($"DELETE FROM {_tableName} WHERE Id=@Id", new { Id = id }, cancellationToken: cancellationToken);
+    }
+
+    //uses transaction
+    public async Task InsertRangeAsync(IEnumerable<T> t, CancellationToken cancellationToken = default)
+    {
+        var insertQuery = GenerateInsertQuery();
+
+        using var dbConnection = CreateConnection();
+        using var tran = dbConnection.BeginTransaction();
+
+        try
+        {
+            await dbConnection.ExecuteAsyncWithToken(insertQuery, t, tran, cancellationToken: cancellationToken);
+            tran.Commit();
+        }
+        catch (Exception e)
+        {
+            tran.Rollback();
+            throw;
+        }
     }
 
     #region PrivateHelperMethods

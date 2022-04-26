@@ -7,4 +7,7 @@ public interface IGenericRepository<T> where T: class
     Task InsertAsync(T t,CancellationToken cancellationToken = default);
     void InsertBulk(IEnumerable<T> items); 
     Task UpdateAsync(T t, CancellationToken cancellationToken = default);
+    Task DeleteAsync(object id, CancellationToken cancellationToken = default);
+    Task InsertRangeAsync(IEnumerable<T> t, CancellationToken cancellationToken = default);
+    
 }

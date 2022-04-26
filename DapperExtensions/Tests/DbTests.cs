@@ -153,9 +153,7 @@ public class DbTests : IntegrationTestBase
         var id = resultsList.Single(x => x.FirstName == "test" && x.LastName == "test").Id;
         
         //WHEN
-
         await _genericRepository.DeleteAsync(id);
-        
 
         //THEN
         var r = await _genericRepository.GetAllAsync();

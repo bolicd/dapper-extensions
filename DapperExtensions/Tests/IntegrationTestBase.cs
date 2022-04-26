@@ -19,7 +19,6 @@ public abstract class IntegrationTestBase
         DbMigrationLite.ExecuteMigration(ConnectionString);
     }
 
-    //TODO: Why is teardown not working
     [TearDown]
     public void Teardown()
     {

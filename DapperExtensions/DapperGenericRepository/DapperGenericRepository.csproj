@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Title>Generic Repository For Dapper</Title>
+        <Authors>Damir Bolic</Authors>
+        <Description>Generic repository implementation for dapper with support for cancellation tokens, bulk insert and CRUD operations  </Description>
+        <PackageProjectUrl>https://github.com/bolicd/dapper-extensions</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/bolicd/dapper-extensions</RepositoryUrl>
+        <RepositoryType>public</RepositoryType>
+        <PackageTags>dapper;async;genericrepo;bulkinsert</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AsyncDapperExtensions" Version="1.0.2" />
+      <PackageReference Include="FluentAssertions" Version="6.6.0" />
+      <PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.0" />
+    </ItemGroup>
+
+</Project>

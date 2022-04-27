@@ -1,5 +1,6 @@
 ﻿using System;
 using Infrastructure.Infrastructure;
+using Microsoft.Data.SqlClient;
 using NUnit.Framework;
 
 namespace Tests;
@@ -7,10 +8,10 @@ namespace Tests;
 [SetUpFixture]
 public abstract class IntegrationTestBase
 {
-    private string ConnectionString { get; set; } = string.Empty;
+    public string ConnectionString { get; set; } = string.Empty;
     private string DatabaseName { get; set; } = string.Empty;
 
-    [OneTimeSetUp]
+    [SetUp]
     public void StartDatabase()
     {
         DatabaseName = Guid.NewGuid().ToString();
@@ -18,25 +19,27 @@ public abstract class IntegrationTestBase
         DbMigrationLite.ExecuteMigration(ConnectionString);
     }
 
-    //TODO: Why is teardown not working
-    // [OneTimeTearDown]
-    // public void Teardown()
-    // {
-    //     
-    //     using var conn = new SqlConnection(ConnectionString);
-    //     conn.Open();
-    //
-    //     using (var command = new SqlCommand())
-    //     {
-    //         command.Connection = conn;
-    //
-    //         command.CommandText = "USE master";
-    //         command.ExecuteNonQuery();
-    //
-    //         command.CommandText = $"DROP DATABASE \"{_databaseName}\"";
-    //         command.ExecuteNonQuery();
-    //     }
-    //
-    //     conn.Close();
-    // }
+    [TearDown]
+    public void Teardown()
+    {
+        
+        using var conn = new SqlConnection(ConnectionString);
+        conn.Open();
+    
+        using (var command = new SqlCommand())
+        {
+            command.Connection = conn;
+    
+            command.CommandText = $"USE master";
+            command.ExecuteNonQuery();
+            
+            command.CommandText = $"alter database \"{DatabaseName}\" set single_user with rollback immediate";
+            command.ExecuteNonQuery();
+    
+            command.CommandText = $"DROP DATABASE \"{DatabaseName}\"";
+            command.ExecuteNonQuery();
+        }
+    
+        conn.Close();
+    }
 }

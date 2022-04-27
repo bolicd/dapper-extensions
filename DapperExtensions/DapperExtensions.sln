@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{35B5D06A-FC23-486D-A8B6-F7C8C972310A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperGenericRepository", "DapperGenericRepository\DapperGenericRepository.csproj", "{31210FEF-3D22-496C-858B-75C3EB52F9AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{35B5D06A-FC23-486D-A8B6-F7C8C972310A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35B5D06A-FC23-486D-A8B6-F7C8C972310A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35B5D06A-FC23-486D-A8B6-F7C8C972310A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31210FEF-3D22-496C-858B-75C3EB52F9AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31210FEF-3D22-496C-858B-75C3EB52F9AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31210FEF-3D22-496C-858B-75C3EB52F9AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31210FEF-3D22-496C-858B-75C3EB52F9AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,33 +1,37 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 
-namespace DapperGenericRepository.Helpers;
-
-public static class BulkInsertHelpers
+namespace DapperGenericRepository.Helpers
 {
-   
-    public static DataTable CreateDataTable<T>(IEnumerable<T> list)
+    public static class BulkInsertHelpers
     {
-        var type = typeof(T);
-        var properties = type.GetProperties();      
-    
-        var dataTable = new DataTable();
-        dataTable.TableName = typeof(T).FullName;
-        
-        foreach (var info in properties)
+        public static DataTable CreateDataTable<T>(IEnumerable<T> list)
         {
-            dataTable.Columns.Add(new DataColumn(info.Name, Nullable.GetUnderlyingType(info.PropertyType) ?? info.PropertyType));
-        }
-    
-        foreach (var entity in list)
-        {
-            var values = new object?[properties.Length];
-            for (var i = 0; i < properties.Length; i++)
+            var type = typeof(T);
+            var properties = type.GetProperties();
+
+            var dataTable = new DataTable();
+            dataTable.TableName = typeof(T).FullName;
+
+            foreach (var info in properties)
             {
-                values[i] = properties[i].GetValue(entity);
+                dataTable.Columns.Add(new DataColumn(info.Name,
+                    Nullable.GetUnderlyingType(info.PropertyType) ?? info.PropertyType));
             }
-            dataTable.Rows.Add(values);
+
+            foreach (var entity in list)
+            {
+                var values = new object?[properties.Length];
+                for (var i = 0; i < properties.Length; i++)
+                {
+                    values[i] = properties[i].GetValue(entity);
+                }
+
+                dataTable.Rows.Add(values);
+            }
+
+            return dataTable;
         }
-    
-        return dataTable;
     }
 }

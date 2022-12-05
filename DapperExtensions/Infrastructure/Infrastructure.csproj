@@ -15,6 +15,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Include="Scripts\003_AddCommentColumn.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
       <EmbeddedResource Include="Scripts\002_PopulateTestTable.sql">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>

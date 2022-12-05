@@ -18,9 +18,6 @@
 
     <ItemGroup>
       <None Remove="Scripts\001_TestingDatabaseSetup.sql" />
-      <EmbeddedResource Include="Scripts\001_TestingDatabaseSetup.sql">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>

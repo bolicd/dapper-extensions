@@ -16,6 +16,38 @@ public interface IGenericRepository<T> where T: class
     Task InsertRangeAsync(IEnumerable<T> t, CancellationToken cancellationToken = default);   
 }
 ```
+### Example usage 
+
+Create Model class for example:
+
+```cs
+public class MainTable
+{
+    public int Id { get; set; }
+    public string Data { get; set; }
+    public DateTime UpdatedDate { get; set; }
+}
+```
+Create new class which inherits from GenericRepository and pass model as type:
+
+```cs
+public class MainTableRepository: GenericRepository<MainTable>
+{
+    public MainTableRepository(string connectionString, string tableName) : base(connectionString, tableName)
+    {
+        
+    }
+}
+```
+
+Thats it, repository is now ready to be used like so:
+```cs
+  await mainTableRepository.InsertAsync(new MainTable()
+        {
+            Data = data,
+            UpdatedDate = DateTime.Now
+        });
+```
 
 Each async method also supports cancellation token except for InsertBulk which is not async and is using SqlBulkCopy for efficient insert large number of records without a transaction.
 

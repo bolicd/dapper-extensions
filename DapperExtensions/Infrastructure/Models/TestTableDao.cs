@@ -6,4 +6,6 @@ public class TestTableDao
     public int Year { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
+
+    public string? Comment { get; set; } = null;
 }

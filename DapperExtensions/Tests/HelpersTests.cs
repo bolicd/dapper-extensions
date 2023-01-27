@@ -35,6 +35,6 @@ public class HelpersTests
         var dataTable = BulkInsertHelpers.CreateDataTable(listOfModels);
         
         //THEN
-        dataTable.Columns.Count.Should().Be(4);
+        dataTable.Columns.Count.Should().Be(5);
     }
 }
